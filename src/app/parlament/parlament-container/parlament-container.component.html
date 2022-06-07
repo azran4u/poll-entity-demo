@@ -1,0 +1,52 @@
+<div class="container">
+  <button (click)="closeSubscription()">close subscription</button>
+  <button (click)="openSubscription()">open subscription</button>
+  <div class="column">
+    <ng-container *ngIf="operations$ | async as operations">
+      <app-parlament-entity-view-component
+        [data]="operations"
+        [title]="'operations from store'"
+      >
+      </app-parlament-entity-view-component>
+    </ng-container>
+    <ng-container *ngIf="operationsFromService$ | async as operations">
+      <app-parlament-entity-view-component
+        [data]="operations"
+        [title]="'operations from service'"
+      >
+      </app-parlament-entity-view-component>
+    </ng-container>
+  </div>
+  <div class="column">
+    <ng-container *ngIf="mos$ | async as mos">
+      <app-parlament-entity-view-component
+        [data]="mos"
+        [title]="'mos from store'"
+      >
+      </app-parlament-entity-view-component>
+    </ng-container>
+    <ng-container *ngIf="mosFromService$ | async as mos">
+      <app-parlament-entity-view-component
+        [data]="mos"
+        [title]="'mos from service'"
+      >
+      </app-parlament-entity-view-component>
+    </ng-container>
+  </div>
+  <div class="column">
+    <ng-container *ngIf="areas$ | async as areas">
+      <app-parlament-entity-view-component
+        [data]="areas"
+        [title]="'areas from store'"
+      >
+      </app-parlament-entity-view-component>
+    </ng-container>
+    <ng-container *ngIf="areasFromService$ | async as areas">
+      <app-parlament-entity-view-component
+        [data]="areas"
+        [title]="'areas from service'"
+      >
+      </app-parlament-entity-view-component>
+    </ng-container>
+  </div>
+</div>

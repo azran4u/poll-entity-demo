@@ -1,0 +1,221 @@
+mutation addOperation {
+  insert_parlament_operations(
+    objects: [
+      {
+        name: "op1"
+        entity: {
+          childs: [
+            "e916bbdc-9d13-4603-a534-742a6cbd8719"
+            "7775d3b4-5d6f-43d1-8c84-04efd4cfb451"
+          ]
+        }
+      }
+    ]
+  ) {
+    returning {
+      id
+      name
+      entity
+    }
+  }
+}
+
+mutation addMo {
+  insert_parlament_mos(
+    objects: [
+      {
+        name: "mo2"
+        entity: { childs: ["dc901e54-48e4-4aca-b041-a9f990a70928"] }
+      }
+    ]
+  ) {
+    returning {
+      id
+      name
+      entity
+    }
+  }
+}
+
+mutation addArea {
+  insert_parlament_areas(objects: [{ name: "area3", entity: { childs: [] } }]) {
+    returning {
+      id
+      name
+      entity
+    }
+  }
+}
+
+query allOperations {
+  parlament_operations {
+    id
+    name
+    updated_at
+    entity
+  }
+}
+
+query allMos {
+  parlament_mos {
+    id
+    name
+    updated_at
+    entity
+  }
+}
+
+query allAreas {
+  parlament_areas {
+    id
+    name
+    updated_at
+    entity
+  }
+}
+
+query operationsByIds($ids: [uuid!]) {
+  parlament_operations(where: { id: { _in: $ids } }) {
+    id
+    name
+    updated_at
+    entity
+  }
+}
+
+subscription subscribeToOperationsByNames($names: [String!]) {
+  parlament_operations(where: { name: { _in: $names } }) {
+    id
+    updated_at
+  }
+}
+
+mutation deleteOperation {
+  delete_parlament_operations(where: { name: { _eq: "op1" } }) {
+    returning {
+      id
+      name
+    }
+  }
+}
+
+mutation updateOperationNoChilds {
+  update_parlament_operations(
+    where: { name: { _eq: "op1" } }
+    _set: { entity: { childs: [] } }
+  ) {
+    returning {
+      id
+      name
+      entity
+    }
+  }
+}
+
+mutation updateOperationWithChilds {
+  update_parlament_operations(
+    where: { name: { _eq: "op1" } }
+    _set: {
+      entity: {
+        childs: [
+          "e916bbdc-9d13-4603-a534-742a6cbd8719"
+          "7775d3b4-5d6f-43d1-8c84-04efd4cfb451"
+        ]
+      }
+    }
+  ) {
+    returning {
+      id
+      name
+      entity
+    }
+  }
+}
+
+query allOwners {
+  owners {
+    id
+    name
+    age
+  }
+}
+
+mutation addCat {
+  insert_cats(
+    objects: [
+      {
+        age: 1
+        name: "cat1"
+        ownerId: "7ad5294b-92c4-42b1-8438-45b0d521cc35"
+        tags: ["a", "b", "c"]
+      }
+    ]
+  ) {
+    returning {
+      id
+    }
+  }
+}
+
+mutation deleteCat {
+  delete_cats(where: { id: { _eq: "f7d2f447-4fc8-4233-a2a9-87c3fcbc91e1" } }) {
+    returning {
+      id
+    }
+  }
+}
+
+mutation addOwner {
+  insert_owners(objects: { name: "yosi", age: 20 }) {
+    returning {
+      id
+    }
+  }
+}
+
+subscription ownersAgeOver18 {
+  owners(where: { age: { _gte: 18 } }) {
+    id
+    name
+    age
+    updated_at
+  }
+}
+
+query ownersById {
+  owners(
+    where: {
+      id: {
+        _in: [
+          "f017cbc3-6ad2-4841-b8e4-6eb1a54044fb"
+          "804973f1-52c1-4391-b038-0527d77622bf"
+        ]
+      }
+    }
+  ) {
+    id
+    name
+    age
+    cats {
+      id
+    }
+  }
+}
+
+subscription subscribeToCatChanges {
+  cats(where: { name: { _eq: "cat1" } }) {
+    id
+    updated_at
+    age
+  }
+}
+
+mutation changeCat {
+  update_cats(where: { name: { _eq: "cat1" } }, _set: { age: 99 }) {
+    returning {
+      id
+      name
+      age
+    }
+  }
+}
