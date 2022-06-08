@@ -108,38 +108,3 @@ export function pollEntity<Entity, IDType>(
     }
   }
 }
-
-// export function pollRleEntity<Entity, IDType>(
-//   options: PollRleOptions<Entity, IDType>
-// ): Observable<any> {
-//   const {
-//     livequery,
-//     myStore,
-//     byIds,
-//     upsert,
-//     remove,
-//     diff = defaultDiff
-//   } = options;
-//   return livequery().pipe(
-//     tap((data) =>
-//       console.log(`pollEntity entry ${JSON.stringify(data, null, 4)}`)
-//     ),
-//     withLatestFrom(myStore()),
-//     tap((data) =>
-//       console.log(`pollEntity withLatestFrom ${JSON.stringify(data, null, 4)}`)
-//     ),
-//     map(([curr, prev]) => diff(prev, curr)),
-//     tap((data) =>
-//       console.log(`pollEntity diff ${JSON.stringify(data, null, 4)}`)
-//     ),
-//     tap(({ deleted, upserted }) => remove(deleted)),
-//     tap((data) =>
-//       console.log(`pollEntity after remove ${JSON.stringify(data, null, 4)}`)
-//     ),
-//     concatMap(({ deleted, upserted }) => byIds(upserted)),
-//     tap((data) =>
-//       console.log(`pollEntity byIds ${JSON.stringify(data, null, 4)}`)
-//     ),
-//     tap((entities) => upsert(entities))
-//   );
-// }
