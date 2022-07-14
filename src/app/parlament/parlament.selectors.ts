@@ -31,13 +31,11 @@ export const selectAllMo = createSelector(selectMoState, (map) =>
 );
 
 export const selectAllOperationsMoIds = createSelector(
-  selectOperationsState,
-  (opmap) => {
-    const operations = Array.from(opmap.values());
-    const moids: ID[] = _.sortBy(
+  selectAllOperations,
+  (operations) => {
+    return _.sortBy(
       _.uniq(_.flatten(operations.map((op) => op?.entity?.childs ?? [])))
     );
-    return moids ?? [];
   }
 );
 
