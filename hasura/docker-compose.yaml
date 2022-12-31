@@ -7,6 +7,7 @@ services:
       - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgrespassword
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
   pgadmin:
     container_name: pgadmin4
     image: dpage/pgadmin4
@@ -21,18 +22,19 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
   graphql-engine:
-    image: hasura/graphql-engine:v2.3.0
+    image: hasura/graphql-engine:latest
     ports:
       - "8080:8080"
     depends_on:
       - "postgres"
     restart: always
     environment:
+      # HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
       HASURA_GRAPHQL_DB_URL_FROM_ENV: postgres://postgres:postgrespassword@postgres:5432/postgres
       ## postgres database to store Hasura metadata
       HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
       ## this env var can be used to add the above postgres database to Hasura as a data source. this can be removed/updated based on your needs
-      PG_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      # PG_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
       ## enable the console served by server
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
       ## enable debugging mode. It is recommended to disable this in production
@@ -40,6 +42,8 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED_REFETCH_INTERVAL: 500
+      HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED_BATCH_SIZE: 2
 volumes:
   db_data:
   pgadmin_data:
